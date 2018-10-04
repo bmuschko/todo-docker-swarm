@@ -43,11 +43,11 @@ $ exit
 
 ```
 $ vagrant ssh swarm1
-printf "postgresql" | docker secret create db-password -
+printf "prodpwd" | docker secret create db-password -
 ```
 
 == Running a service
 
 ```
-docker service create bmuschko/todo-web-service:latest --publish 8080:8080 --replicas 1
+docker service create bmuschko/todo-web-service:latest --publish 8080:8080 --replicas 2
 ```
