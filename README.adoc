@@ -1,0 +1,53 @@
+= Setting up a Docker Swarm with Vagrant
+
+== Installation
+
+* Install https://www.vagrantup.com/[Vagrant]
+* Install https://www.virtualbox.org/[VirtualBox]
+
+== Provisioning Swarm
+
+```
+$ vagrant up
+```
+
+== Decomissioning Swarm
+
+```
+$ vagrant destroy -f
+```
+
+== Creating Swarm nodes
+
+=== Manager
+
+Run the `init` command a copy the token for later use to create workers.
+
+```
+$ vagrant ssh swarm1
+$ docker swarm init --advertise-addr 192.168.99.201
+$ exit
+```
+
+=== Workers
+
+Join the swarm as worker by running the `join` command and providing the token.
+
+```
+$ vagrant ssh swarm2
+$ docker swarm join --token SWMTKN-1-4k9483jyh4xwhlba5o6xh9hle3rdl2qtpw388tu3wk9c38ya6r-b30wqt3q0jwcvswfk5939e6ph 192.168.99.201:2377
+$ exit
+```
+
+=== Creating a secret
+
+```
+$ vagrant ssh swarm1
+printf "postgresql" | docker secret create db-password -
+```
+
+== Running a service
+
+```
+docker service create bmuschko/todo-web-service:latest --publish 8080:8080 --replicas 1
+```
