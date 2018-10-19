@@ -37,6 +37,9 @@ Join the swarm as worker by running the `join` command and providing the token.
 $ vagrant ssh swarm2
 $ docker swarm join --token SWMTKN-1-4k9483jyh4xwhlba5o6xh9hle3rdl2qtpw388tu3wk9c38ya6r-b30wqt3q0jwcvswfk5939e6ph 192.168.99.201:2377
 $ exit
+$ vagrant ssh swarm3
+$ docker swarm join --token SWMTKN-1-4k9483jyh4xwhlba5o6xh9hle3rdl2qtpw388tu3wk9c38ya6r-b30wqt3q0jwcvswfk5939e6ph 192.168.99.201:2377
+$ exit
 ```
 
 === Creating a secret
@@ -49,7 +52,7 @@ printf "prodpwd" | docker secret create db-password -
 == Running the service stack
 
 ```
-docker service create --name postgres --publish 5432:5432 --replicas 1 --secret db-password --env POSTGRES_USER=postgres --env POSTGRES_DB_PASSWORD_FILE=/run/secrets/db-password --env POSTGRES_DB=todo postgres:9.6.10-alpine
-docker service create --name todo-web-service --publish 8080:8080 --replicas 1 --secret db-password --env SPRING_PROFILES_ACTIVE=prod bmuschko/todo-web-service:latest
-docker service create --name todo-web-app --publish 80:8080 --replicas 1 --env SPRING_PROFILES_ACTIVE=prod bmuschko/todo-web-app:latest
+docker service create --name postgres --publish 5432:5432 --replicas 2 --secret db-password --env POSTGRES_USER=postgres --env POSTGRES_DB_PASSWORD_FILE=/run/secrets/db-password --env POSTGRES_DB=todo postgres:9.6.10-alpine
+docker service create --name todo-web-service --publish 8080:8080 --replicas 2 --secret db-password --env SPRING_PROFILES_ACTIVE=prod bmuschko/todo-web-service:latest
+docker service create --name todo-web-app --publish 80:8080 --replicas 2 --env SPRING_PROFILES_ACTIVE=prod bmuschko/todo-web-app:latest
 ```
