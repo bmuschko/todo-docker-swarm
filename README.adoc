@@ -62,5 +62,7 @@ $ docker service create --name todo-web-app --publish 80:8080 --replicas 1 --env
 
 == Retrieving the private key of the leader node
 
+```
 $ vagrant ssh-config
 $ more /Users/bmuschko/dev/projects/todo-docker-swarm/.vagrant/machines/swarm1/virtualbox/private_key
+```
