@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
     config.vm.box = "ubuntu/trusty64"
     config.vm.provision "docker"
 
-    (1..3).each do |number|
+    (1..1).each do |number|
         config.vm.define "swarm#{number}" do |node|
             node.vm.network "private_network", ip: "192.168.99.20#{number}"
             node.vm.hostname = "swarm#{number}"
